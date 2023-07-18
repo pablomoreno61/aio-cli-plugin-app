@@ -36,10 +36,12 @@ class DeleteFilesCommand extends BaseCommand {
     if (namespace && auth) {
       const files = await filesLib.init({ ow: { namespace, auth } })
       const results = await files.delete(args.path)
-      this.log(`Deleted ${results.length} files in ${args.path}`)
-      if (results.length > 0) {
-        this.log(results.map(r => r.name).join('\n'))
+
+      if (results.length === 0) {
+        this.log(`${args.path} was not found`)
+        return
       }
+      this.log(`${args.path} was deleted (${results.length} file)`)
     } else {
       this.log('Missing config values, or current working directory is not an App Builder app.')
     }

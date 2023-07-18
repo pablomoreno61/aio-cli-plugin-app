@@ -25,7 +25,7 @@ const yaml = require('js-yaml')
   This is a quick poc intended to add files to remote file storage, and display results in json, yaml or as a list.
   Possible future enhancements:
   - recursive add
-  
+
 */
 
 class AddFilesCommand extends BaseCommand {
@@ -48,7 +48,7 @@ class AddFilesCommand extends BaseCommand {
           const resolvedPath = path.resolve(value)
           const fileContents = fs.readFileSync(resolvedPath, 'utf8')
           const results = await files.write(args.path, fileContents)
-          this.log(`Added ${results.length} files in ${args.path}`)
+          this.log(`Added file ${args.path} ${chalk.dim(`(${results} bytes)`)}`)
           if (results.length > 0) {
             this.log(results.map(r => r.name).join('\n'))
           }
@@ -57,15 +57,11 @@ class AddFilesCommand extends BaseCommand {
         }
       } else {
         const results = await files.write(args.path, value)
-        this.log(`Added ${results.length} files in ${args.path}`)
+        this.log(`Added "${value.substring(0, 50)}..." to file ${args.path} ${chalk.dim(`(${results} bytes)`)}`)
         if (results.length > 0) {
           this.log(results.map(r => r.name).join('\n'))
         }
       }
-
-      
-      
-
     } else {
       this.log('Missing config values, or current working directory is not an App Builder app.')
     }

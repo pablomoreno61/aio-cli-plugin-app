@@ -53,9 +53,13 @@ class ListFilesCommand extends BaseCommand {
       } else {
         if (filesList.length > 0) {
           this.log(chalk.bold(`Files: ${args.path}`))
+          let usedSpace = 0
           filesList.forEach(fileInfo => {
+            usedSpace += fileInfo.contentLength
             this.log(`${fileInfo.name} \t${fileInfo.contentType} \t${chalk.dim(`(${fileInfo.contentLength} bytes)`)}`)
           })
+
+          this.log(`\n${filesList.length} files found ${chalk.dim(`(${usedSpace} bytes)`)}`)
         } else {
           this.log('No files found')
         }
